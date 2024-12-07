@@ -37,14 +37,12 @@ if st.sidebar.button("Run Strategy"):
             st.write("Getting tickers (1/7)")
             # Fetch S&P 500 tickers
             sp500_tickers = uf.fetch_sp500_stocks()
-
+            st.write(f'Gathering data from {start_date} to {current_date} (2/7)')
             for ticker in sp500_tickers:
                 df = uf.get_stock_data(ticker, start, end)
-
-            st.write(f'Gathering data from {start_date} to {current_date} (2/7)')
-            # Find stocks with NR7 pattern
-            nr7_stocks = uf.find_nr7_stocks(sp500_tickers,df, start,end)
-            print(f"Stocks with NR7 pattern as of {datetime.now().date()}: {nr7_stocks}")
+                 # Find stocks with NR7 pattern
+                nr7_stocks = uf.find_nr7_stocks(sp500_tickers,df)
+                print(f"Stocks with NR7 pattern as of {datetime.now().date()}: {nr7_stocks}")
   
     with tab2:
         st.write("This section displays the buy/sell for the stocks with profitable trades for the selected duration.")
