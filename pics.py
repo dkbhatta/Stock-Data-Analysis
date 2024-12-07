@@ -15,7 +15,7 @@ from PIL import Image
 import functions as uf
 
 ### Streamlit App
-image = Image.open('title02.png')
+image = Image.open('title03.png')
 st.set_page_config(page_title = "Stock Data Analysis", page_icon="favicon.ico", layout = "wide")
 # st.title(f"Trading")
 st.image(image)
