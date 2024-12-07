@@ -37,7 +37,7 @@ if st.sidebar.button("Run Strategy"):
             st.write("Getting tickers (1/7)")
             # Fetch S&P 500 tickers
             sp500_tickers = uf.fetch_sp500_stocks()
-            st.write(f'Gathering data from {start_date} to {current_date} (2/7)')
+            st.write(f'Gathering data from {start} to {end} (2/7)')
             for ticker in sp500_tickers:
                 df = uf.get_stock_data(ticker, start, end)
                  # Find stocks with NR7 pattern
