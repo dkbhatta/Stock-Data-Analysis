@@ -29,7 +29,13 @@ def fetch_sp500_stocks():
     sp500_table = pd.read_html(url)[0]
     return sp500_table['Symbol'].tolist()
 
-def find_nr7_stocks(sp500_tickers,start,end):
+def get_stock_data(ticker, start_date, end_date):
+    data = yf.download(ticker, start=start_date, end=end_date)[['Open', 'High', 'Low', 'Close', 'Volume']]
+    df.columns = df.columns.droplevel(1)
+    data['Ticker'] = ticker
+    return data
+    
+def find_nr7_stocks(sp500_tickers,df):
     """
     Identifies S&P 500 stocks with an NR7 pattern as of the current date.
 
@@ -44,11 +50,11 @@ def find_nr7_stocks(sp500_tickers,start,end):
         try:
             # Fetch the last 7 days of stock data
             #df = yf.download(ticker, period="1mo", interval="1d")
-            df = yf.download(ticker, start=start, end=end,progress=False)
+            #df = yf.download(ticker, start=start, end=end,progress=False)
             df.columns = df.columns.droplevel(1)
-            if len(df) < 7:
+            if len(df['Ticker'] == ticker) < 7:
                 continue
-            if detect_nr7(df):
+            if detect_nr7(df['Ticker'] == ticker):
                 nr7_stocks.append(ticker)
         except Exception as e:
             print(f"Error processing {ticker}: {e}")
