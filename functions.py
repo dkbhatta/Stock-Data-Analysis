@@ -51,7 +51,7 @@ def find_nr7_stocks(sp500_tickers,df):
             # Fetch the last 7 days of stock data
             #df = yf.download(ticker, period="1mo", interval="1d")
             #df = yf.download(ticker, start=start, end=end,progress=False)
-            df.columns = df.columns.droplevel(1)
+            #df.columns = df.columns.droplevel(1)
             if len(df['Ticker'] == ticker) < 7:
                 continue
             if detect_nr7(df['Ticker'] == ticker):
