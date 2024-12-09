@@ -31,7 +31,7 @@ def fetch_sp500_stocks():
 
 def get_stock_data(ticker, start_date, end_date):
     data = yf.download(ticker, start=start_date, end=end_date)[['Open', 'High', 'Low', 'Close', 'Volume']]
-    df.columns = df.columns.droplevel(1)
+    data.columns = df.columns.droplevel(1)
     data['Ticker'] = ticker
     return data
     
