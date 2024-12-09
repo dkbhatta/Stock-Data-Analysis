@@ -49,5 +49,5 @@ if st.sidebar.button("Run Strategy"):
         st.set_option('deprecation.showPyplotGlobalUse', False)
         # Add Bollinger Bands using the ta library
         #data = uf.add_bollinger_bands(df)
-        uf.plot_NR7(df,nr7_days)
+        uf.plot_NR7(df.nr7_days)
         
