@@ -41,13 +41,14 @@ if st.sidebar.button("Run Strategy"):
                 df = uf.get_stock_data(ticker, start, end)
                  # Find stocks with NR7 pattern
                 nr7_stocks = uf.find_nr7_stocks(sp500_tickers,df)
-                print(f"Stocks with NR7 pattern as of {datetime.now().date()}: {nr7_stocks}")
+            
+            print(f"Stocks with NR7 pattern as of {datetime.now().date()}: {nr7_stocks}")
   
     with tab2:
         st.write("This section displays the buy/sell for the stocks with profitable trades for the selected duration.")
     
         st.set_option('deprecation.showPyplotGlobalUse', False)
         # Add Bollinger Bands using the ta library
-        #data = uf.add_bollinger_bands(df)
-        uf.plot_NR7(df.nr7_days)
+        df = uf.add_bollinger_bands(df)
+        uf.plot_NR7(df,nr7_days)
         
