@@ -35,49 +35,48 @@ def get_stock_data(ticker, start_date, end_date):
     data['Ticker'] = ticker
     return data
     
-def find_nr7_stocks(sp500_tickers,df):
+def find_nr7_stocks(sp500_tickers, df):
     """
     Identifies S&P 500 stocks with an NR7 pattern as of the current date.
 
     Parameters:
         sp500_tickers (list): List of S&P 500 ticker symbols.
+        df (pd.DataFrame): DataFrame containing stock data with columns ['Ticker', 'Date', 'High', 'Low'].
 
     Returns:
         list: List of tickers with NR7 patterns.
     """
     nr7_stocks = []
+
     for ticker in sp500_tickers:
         try:
-            # Fetch the last 7 days of stock data
-            #df = yf.download(ticker, period="1mo", interval="1d")
-            #df = yf.download(ticker, start=start, end=end,progress=False)
-            #df.columns = df.columns.droplevel(1)
-            if len(df['Ticker'] == ticker) < 7:
+            # Filter the data for the current ticker
+            ticker_data = df[df['Ticker'] == ticker].sort_values('Date', ascending=False)
+            
+            # Ensure at least 7 days of data are available
+            if len(ticker_data) < 7:
                 continue
-            if detect_nr7(df['Ticker'] == ticker):
+            
+            # Check for NR7 pattern
+            if detect_nr7(ticker_data.head(7)):
                 nr7_stocks.append(ticker)
         except Exception as e:
             print(f"Error processing {ticker}: {e}")
+
     return nr7_stocks
 
-def detect_nr7(df):
+def detect_nr7(data):
     """
-    Identifies if the latest row in the DataFrame is an NR7 pattern.
+    Checks if the given 7-day stock data exhibits an NR7 pattern.
 
     Parameters:
-        df (pd.DataFrame): Stock data with 'High' and 'Low' columns.
+        data (pd.DataFrame): DataFrame containing 7 rows with columns ['High', 'Low'].
 
     Returns:
-        bool: True if the latest row is an NR7 pattern, False otherwise.
+        bool: True if NR7 pattern is detected, False otherwise.
     """
-    # Calculate the range (High - Low)
-    df['Range'] = df['High'] - df['Low']
-
-    # Check if the latest row has the smallest range in the last 7 rows
-    if len(df) >= 7:
-        last_7_ranges = df['Range'].iloc[-7:]
-        return last_7_ranges.idxmin() == df.index[-1]
-    return False
+    ranges = data['High'] - data['Low']
+    return ranges.iloc[-1] == ranges.min()
 
 def plot_NR7(data, nr7_days):
     """
